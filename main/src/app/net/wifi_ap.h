@@ -5,6 +5,9 @@
 
 namespace net {
 
+/**
+ * @brief Initializes and controlls the Wifi Adapter
+ */
 class WifiAp : public BaseWifi {
 private:
   const char *TAG = "Wifi_AP";
