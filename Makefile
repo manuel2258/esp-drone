@@ -3,7 +3,7 @@
 # project subdirectory.
 #
 
-PROJECT_NAME := drone_server
+PROJECT_NAME := esp-drone
 
 include $(IDF_PATH)/make/project.mk
 

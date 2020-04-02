@@ -5,6 +5,8 @@
 #include <inttypes.h>
 #include <string>
 
+#include "../pkg/base_pkg.h"
+
 namespace net {
 
 /**
@@ -38,7 +40,7 @@ public:
    * @brief Send the buffer to the host.
    * @param buf The to send buffer
    */
-  void send_pkg(std::array<uint8_t, 10> *buf);
+  void send_pkg(std::array<uint8_t, pkg::MAX_PKG_SIZE> *buf);
 };
 
 } // namespace net

@@ -1,8 +1,14 @@
 #ifndef DRONE_SRC_SYS_CLIENT_MAIN
 #define DRONE_SRC_SYS_CLIENT_MAIN
 
+#include <unordered_map>
+
 #include "./net/tcp_server.h"
 #include "./net/wifi_ap.h"
+#include "./pkg/base_pkg.h"
+#include "./pkg/hello_pkg.h"
+#include "./pkg/input_pkg.h"
+#include "./ses/session.h"
 #include "base_main.h"
 
 namespace app {
@@ -14,13 +20,19 @@ class MainServer : public BaseMain {
 private:
   const char *LOG_TAG = "Main_Server";
 
+  bool active_session;
+  ses::Session *session;
+
+private:
   net::TcpServer server;
+
+  void on_new_pkg(std::array<uint8_t, pkg::MAX_PKG_SIZE> &buf);
 
 public:
   MainServer();
 
   void init() override;
-};
+}; // namespace app
 
 } // namespace app
 

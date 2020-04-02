@@ -3,9 +3,9 @@ build/
 sdkconfig
 sdkconfig.old
 
-test/build/
-test/CMakeFiles/
-test/DroneTest
-test/CMakeCache.txt
-test/cmake_install.cmake
-test/Makefile
+local_test/build/
+local_test/CMakeFiles/
+local_test/DroneTest
+local_test/CMakeCache.txt
+local_test/cmake_install.cmake
+local_test/Makefile

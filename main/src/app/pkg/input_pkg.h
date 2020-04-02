@@ -1,16 +1,18 @@
-#ifndef DRONE_PKG_SRC_PKG_DRONE_PKG
-#define DRONE_PKG_SRC_PKG_DRONE_PKG
+#ifndef DRONE_PKG_SRC_PKG_INPUT_PKG
+#define DRONE_PKG_SRC_PKG_INPUT_PKG
 
 #include <array>
 #include <inttypes.h>
 #include <memory>
+
+#include "base_pkg.h"
 
 namespace pkg {
 
 /**
  * @brief Represents a input package
  */
-class InputPkg {
+class InputPkg : public BasePkg {
 
   // Public fields
 public:
@@ -22,7 +24,7 @@ public:
 
   // API to generate a pkg object from a buffer
 public:
-  InputPkg(std::array<uint8_t, 10> &raw_pkg);
+  InputPkg(std::array<uint8_t, MAX_PKG_SIZE> &raw_pkg);
 
   // API to generate a buffer from pkg object
 public:
@@ -33,7 +35,7 @@ public:
    * @brief Generates a buffer from the current pkg's fields
    * @return std::unique_ptr<std::array<uint8_t, 5>> The generated buffer
    */
-  std::unique_ptr<std::array<uint8_t, 10>> gen_pkg();
+  std::unique_ptr<std::array<uint8_t, MAX_PKG_SIZE>> gen_pkg();
 };
 } // namespace pkg
 

@@ -1,10 +1,10 @@
-#include "input_pkg.h"
+#include "app/pkg/input_pkg.h"
 
 #define BOOST_TEST_MODULE InputPkgTest
 #include <boost/test/included/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(bufferparse_simple) {
-  std::array<uint8_t, 10> buf = {1, 1, 128, 3, 6, 2, 255, 255, 2, 3};
+  std::array<uint8_t, 10> buf = {2, 1, 128, 3, 6, 2, 255, 255, 2, 3};
   pkg::InputPkg sut(buf);
 
   BOOST_CHECK_EQUAL(sut.motors_on, true);
@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_CASE(bufferparse_simple) {
 }
 
 BOOST_AUTO_TEST_CASE(bufferparse_zero) {
-  std::array<uint8_t, 10> buf = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  std::array<uint8_t, 10> buf = {2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
   pkg::InputPkg sut(buf);
 
   BOOST_CHECK_EQUAL(sut.motors_on, false);
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE(bufferparse_zero) {
 }
 
 BOOST_AUTO_TEST_CASE(buffergen_simple) {
-  std::array<uint8_t, 10> want = {1, 1, 128, 3, 6, 2, 255, 255, 2, 3};
+  std::array<uint8_t, 10> want = {2, 1, 128, 3, 6, 2, 255, 255, 2, 3};
 
   pkg::InputPkg sut(true, -32765, 1538, -1, 515);
   auto have = sut.gen_pkg();
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(buffergen_simple) {
 }
 
 BOOST_AUTO_TEST_CASE(buffergen_zero) {
-  std::array<uint8_t, 10> want = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+  std::array<uint8_t, 10> want = {2, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
   pkg::InputPkg sut(false, 0, 0, 0, 0);
   auto have = sut.gen_pkg();
