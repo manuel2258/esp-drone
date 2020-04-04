@@ -6,9 +6,9 @@ project(DroneLocalTest)
 
 set(INCLUDE_DIR ../main/src)
 
-add_executable(DroneTest 
-    ./tests/test_input_pkg.cpp 
+add_executable(DroneTest  ./tests/test_main.cpp
     ${INCLUDE_DIR}/app/pkg/input_pkg.cpp
+    ${INCLUDE_DIR}/app/ses/session.cpp
 )
 
 target_include_directories(DroneTest PUBLIC ${INCLUDE_DIR}/)

@@ -1,7 +1,6 @@
 #include "app/pkg/input_pkg.h"
 
-#define BOOST_TEST_MODULE InputPkgTest
-#include <boost/test/included/unit_test.hpp>
+BOOST_AUTO_TEST_SUITE(inputpkg_suite)
 
 BOOST_AUTO_TEST_CASE(bufferparse_simple) {
   std::array<uint8_t, 10> buf = {2, 1, 128, 3, 6, 2, 255, 255, 2, 3};
@@ -46,3 +45,5 @@ BOOST_AUTO_TEST_CASE(buffergen_zero) {
     BOOST_CHECK_EQUAL(want[i], (*have)[i]);
   }
 }
+
+BOOST_AUTO_TEST_SUITE_END()
