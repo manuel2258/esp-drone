@@ -7,6 +7,7 @@
 namespace app {
 
 void MainClient::init() {
+  set_instance(this);
   BaseMain::init();
 
   while (!wifi->is_connected()) {
