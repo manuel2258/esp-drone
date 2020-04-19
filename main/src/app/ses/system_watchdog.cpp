@@ -1,5 +1,8 @@
 #include "system_watchdog.h"
+
 #include "esp_log.h"
+
+#include "../pkg/input_pkg.h"
 
 namespace ses {
 
@@ -20,13 +23,26 @@ SystemWatchdog::SystemWatchdog(int timeout_ms) : timeout_ms(timeout_ms) {
   ESP_ERROR_CHECK(esp_timer_start_once(timer_handle, timeout_ms * 1000));
 }
 
-void SystemWatchdog::reset() {
+void SystemWatchdog::handle_event(eve::Event *event) {
+  // Watch for NetPkg
+  if (event->event_type != eve::EventType::NET_PKG) {
+    return;
+  }
+
+  // Check if type is input
+  auto pkg = (pkg::BasePkg *)event->data;
+  if (pkg->pkg_type != pkg::PkgType::Input) {
+    return;
+  }
+
+  // If so reset watchdog
   ESP_ERROR_CHECK(esp_timer_stop(timer_handle));
   ESP_ERROR_CHECK(esp_timer_start_once(timer_handle, timeout_ms * 1000));
 }
 
 void SystemWatchdog::callback(void *args) {
-  SystemWatchdog::get_instance()->trigger_callback();
+  auto event = eve::get_event(eve::EventType::WATCHDOG_TIMEOUT, nullptr);
+  event_handler->handle_event(event.get());
 }
 
 SystemWatchdog::~SystemWatchdog() {

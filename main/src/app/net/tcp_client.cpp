@@ -33,8 +33,8 @@ void TcpClient::create_socket() {
   ESP_LOGI(LOG_TAG, "Successfully connected");
 }
 
-void TcpClient::send_pkg(std::array<uint8_t, pkg::MAX_PKG_SIZE> *buf) {
-  int err = send(sock_handle, buf, pkg::MAX_PKG_SIZE, 0);
+void TcpClient::send_pkg(uint8_t *buf) {
+  int err = send(sock_handle, buf, pkg::MAX_TOTAL_SIZE, 0);
   if (err < 0) {
     ESP_LOGE(LOG_TAG, "Error occurred during sending: errno %d", errno);
   }

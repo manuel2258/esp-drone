@@ -7,9 +7,7 @@ namespace app {
 
 MainServer::MainServer()
     : BaseMain(new net::WifiAp()),
-      server(8080, [this](std::array<uint8_t, pkg::MAX_PKG_SIZE> &buf) {
-        on_new_pkg(buf);
-      }) {}
+      server(8080, [this](uint8_t *buf) { on_new_pkg(buf); }) {}
 
 void MainServer::init() {
   set_instance(this);
@@ -25,7 +23,7 @@ void MainServer::init() {
   }
 }
 
-void MainServer::on_new_pkg(std::array<uint8_t, pkg::MAX_PKG_SIZE> &buf) {
+void MainServer::on_new_pkg(uint8_t *buf) {
   auto pkg = pkg::parse_pkg(buf);
   if (pkg->pkg_type == pkg::PkgType::Hello) {
     if (active_session) {

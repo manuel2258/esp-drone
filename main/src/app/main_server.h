@@ -26,7 +26,7 @@ private:
 private:
   net::TcpServer server;
 
-  void on_new_pkg(std::array<uint8_t, pkg::MAX_PKG_SIZE> &buf);
+  void on_new_pkg(uint8_t *buf);
 
 public:
   MainServer();

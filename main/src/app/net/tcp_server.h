@@ -17,7 +17,7 @@ private:
   const char *LOG_TAG = "TcpServer";
 
   int port;
-  std::function<void(std::array<uint8_t, pkg::MAX_PKG_SIZE> &)> callback;
+  std::function<void(uint8_t *)> callback;
 
   int sock_handle;
   int con_handle;
@@ -29,9 +29,7 @@ public:
    * @param port The to listen at port.
    * @param callback The to call function on receiving a package.
    */
-  TcpServer(
-      int port,
-      std::function<void(std::array<uint8_t, pkg::MAX_PKG_SIZE> &)> callback)
+  TcpServer(int port, std::function<void(uint8_t *)> callback)
       : port(port), callback(callback) {}
 
   /**

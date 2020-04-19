@@ -4,15 +4,14 @@
 
 namespace pkg {
 
-HelloPkg::HelloPkg(std::array<uint8_t, MAX_PKG_SIZE> &raw_pkg)
-    : BasePkg(PkgType::Input) {
+HelloPkg::HelloPkg(uint8_t *raw_pkg) : BasePkg(PkgType::Input) {
   assert(raw_pkg[0] == 0);
 }
 
 HelloPkg::HelloPkg() : BasePkg(PkgType::Input) {}
 
-std::unique_ptr<std::array<uint8_t, MAX_PKG_SIZE>> HelloPkg::gen_pkg() {
-  auto pkg = std::make_unique<std::array<uint8_t, MAX_PKG_SIZE>>();
+std::unique_ptr<uint8_t *> HelloPkg::gen_pkg() {
+  auto pkg = std::make_unique<uint8_t *>();
 
   return pkg;
 }

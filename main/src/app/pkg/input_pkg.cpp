@@ -4,39 +4,29 @@
 
 namespace pkg {
 
-InputPkg::InputPkg(std::array<uint8_t, MAX_PKG_SIZE> &raw_pkg)
-    : BasePkg(PkgType::Input), motors_on((raw_pkg[1] << 7) >> 7),
-      throttle(raw_pkg[2] << 8 | raw_pkg[3]),
+InputPkg::InputPkg(uint8_t *raw_pkg)
+    : BasePkg(PkgType::Input), throttle(raw_pkg[0] << 8 | raw_pkg[1]),
+      rotation_x(raw_pkg[2] << 8 | raw_pkg[3]),
       rotation_y(raw_pkg[4] << 8 | raw_pkg[5]),
-      rotation_z(raw_pkg[6] << 8 | raw_pkg[7]),
-      rotation_x(raw_pkg[8] << 8 | raw_pkg[9]) {
-  assert(raw_pkg[0] == 2);
-}
+      rotation_z(raw_pkg[6] << 8 | raw_pkg[7]) {}
 
-InputPkg::InputPkg(bool motors_on, short throttle, short rotation_y,
-                   short rotation_z, short rotation_x)
-    : BasePkg(PkgType::Input), motors_on(motors_on), throttle(throttle),
-      rotation_y(rotation_y), rotation_z(rotation_z), rotation_x(rotation_x) {}
+InputPkg::InputPkg(int16_t throttle, int16_t rotation_x, int16_t rotation_y,
+                   int16_t rotation_z)
+    : BasePkg(PkgType::Input), throttle(throttle), rotation_x(rotation_x),
+      rotation_y(rotation_y), rotation_z(rotation_z) {}
 
-std::unique_ptr<std::array<uint8_t, MAX_PKG_SIZE>> InputPkg::gen_pkg() {
-  auto pkg = std::make_unique<std::array<uint8_t, MAX_PKG_SIZE>>();
+void InputPkg::gen_pkg(uint8_t *pkg) {
+  pkg[0] = throttle >> 8;
+  pkg[1] = (throttle << 8) >> 8;
 
-  (*pkg)[0] = 2;
-  (*pkg)[1] = motors_on ? 1 : 0;
+  pkg[2] = rotation_x >> 8;
+  pkg[3] = (rotation_x << 8) >> 8;
 
-  (*pkg)[2] = throttle >> 8;
-  (*pkg)[3] = (throttle << 8) >> 8;
+  pkg[4] = rotation_y >> 8;
+  pkg[5] = (rotation_y << 8) >> 8;
 
-  (*pkg)[4] = rotation_y >> 8;
-  (*pkg)[5] = (rotation_y << 8) >> 8;
-
-  (*pkg)[6] = rotation_z >> 8;
-  (*pkg)[7] = (rotation_z << 8) >> 8;
-
-  (*pkg)[8] = rotation_x >> 8;
-  (*pkg)[9] = (rotation_x << 8) >> 8;
-
-  return pkg;
+  pkg[6] = rotation_z >> 8;
+  pkg[7] = (rotation_z << 8) >> 8;
 }
 
 } // namespace pkg

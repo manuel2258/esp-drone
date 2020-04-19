@@ -16,26 +16,27 @@ class InputPkg : public BasePkg {
 
   // Public fields
 public:
-  const bool motors_on;
-  const short throttle;
-  const short rotation_y;
-  const short rotation_z;
-  const short rotation_x;
+  static const uint8_t PKG_SIZE = 8;
+
+  const int16_t throttle;
+  const int16_t rotation_x;
+  const int16_t rotation_y;
+  const int16_t rotation_z;
 
   // API to generate a pkg object from a buffer
 public:
-  InputPkg(std::array<uint8_t, MAX_PKG_SIZE> &raw_pkg);
+  InputPkg(uint8_t *raw_pkg);
 
   // API to generate a buffer from pkg object
 public:
-  InputPkg(bool motors_on, short throttle, short rotation_y, short rotation_z,
-           short rotation_x);
+  InputPkg(int16_t throttle, int16_t rotation_x, int16_t rotation_y,
+           int16_t rotation_z);
 
   /**
-   * @brief Generates a buffer from the current pkg's fields
-   * @return std::unique_ptr<std::array<uint8_t, 5>> The generated buffer
+   * @brief Writes pkg data to buffer from the current pkg's fields
+   * @param pkg The to append to buffer
    */
-  std::unique_ptr<std::array<uint8_t, MAX_PKG_SIZE>> gen_pkg();
+  void gen_pkg(uint8_t *pkg) override;
 };
 } // namespace pkg
 

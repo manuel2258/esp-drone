@@ -40,7 +40,7 @@ public:
    * @brief Send the buffer to the host.
    * @param buf The to send buffer
    */
-  void send_pkg(std::array<uint8_t, pkg::MAX_PKG_SIZE> *buf);
+  void send_pkg(uint8_t *buf);
 };
 
 } // namespace net

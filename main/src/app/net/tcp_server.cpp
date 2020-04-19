@@ -48,8 +48,8 @@ void TcpServer::create_socket() {
 }
 
 void TcpServer::recv_next_pkg() {
-  std::array<uint8_t, pkg::MAX_PKG_SIZE> buf;
-  int recv_len = recv(con_handle, &buf, pkg::MAX_PKG_SIZE, 0);
+  uint8_t buf[pkg::MAX_TOTAL_SIZE];
+  int recv_len = recv(con_handle, buf, pkg::MAX_TOTAL_SIZE, 0);
   if (recv_len < 0) {
     ESP_LOGE(LOG_TAG, "Error occurred during receiving: errno %d", errno);
   } else if (recv_len == 0) {

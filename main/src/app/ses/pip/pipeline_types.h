@@ -1,36 +1,38 @@
 #ifndef DRONE_SRC_APP_SES_PIP_PIPELINE_TYPES
 #define DRONE_SRC_APP_SES_PIP_PIPELINE_TYPES
 
+#include <inttypes.h>
+
+#include "../../pkg/base_pkg.h"
 #include "../../pkg/input_pkg.h"
 
 namespace pip {
 
 struct Input {
-  // InputPkg values
-  bool motors_on;
-  short throttle;
-  short rotation_y;
-  short rotation_z;
-  short rotation_x;
+  int16_t throttle;
 
-  // Additional values
-  bool panic;
+  int16_t rotation_x;
+  int16_t rotation_y;
+  int16_t rotation_z;
 
-  Input(pkg::InputPkg in) {
-    motors_on = in.motors_on;
-    throttle = in.throttle;
-    rotation_y = in.rotation_y;
-    rotation_z = in.rotation_z;
-    rotation_x = in.rotation_x;
-  }
+  Input(pkg::InputPkg &net_pkg)
+      : throttle(net_pkg.throttle), rotation_x(net_pkg.rotation_x),
+        rotation_y(net_pkg.rotation_y), rotation_z(net_pkg.rotation_z) {}
+
+  Input(int16_t throttle, int16_t rotation_x, int16_t rotation_y,
+        int16_t rotation_z)
+      : throttle(throttle), rotation_x(rotation_x), rotation_y(rotation_y),
+        rotation_z(rotation_z) {}
+
+  Input() : throttle(0), rotation_x(0), rotation_y(0), rotation_z(0) {}
 };
 
 struct Output {
   // Direct motor values
-  short fl_motor;
-  short fr_motor;
-  short bl_motor;
-  short br_motor;
+  uint16_t fl_motor;
+  uint16_t fr_motor;
+  uint16_t bl_motor;
+  uint16_t br_motor;
 };
 
 class IInputProcessor {
