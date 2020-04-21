@@ -1,6 +1,7 @@
 #include "main_server.h"
 
-#include "../misc/test_log.h"
+#include "esp_log.h"
+
 #include "./pkg/pkg_factory.h"
 
 namespace app {
@@ -25,12 +26,13 @@ void MainServer::init() {
 
 void MainServer::on_new_pkg(uint8_t *buf) {
   auto pkg = pkg::parse_pkg(buf);
+  ESP_LOGE(LOG_TAG, "Received Package of type %i", (int)pkg->pkg_type);
   if (pkg->pkg_type == pkg::PkgType::Hello) {
     if (active_session) {
       ESP_LOGE(LOG_TAG, "Received Hello Package while in active Session ...");
       return;
     }
-    session = new ses::Session();
+    session = ses::SessionBuilder::get_default()->build().release();
     active_session = true;
   } else if (pkg->pkg_type == pkg::PkgType::Bye) {
     if (!active_session) {
@@ -40,13 +42,13 @@ void MainServer::on_new_pkg(uint8_t *buf) {
     // TODO: Handle Session Ending
     delete session;
     active_session = false;
-  } else if (pkg->pkg_type == pkg::PkgType::Input) {
+  } else {
     if (!active_session) {
       ESP_LOGE(LOG_TAG,
                "Received Input Package while not in active Session ...");
       return;
     }
-    session->on_new_input_pkg((pkg::InputPkg *)pkg.get());
+    session->on_new_pkg(pkg.get());
   }
 }
 

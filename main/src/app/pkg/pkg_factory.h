@@ -28,6 +28,22 @@ std::unique_ptr<BasePkg> parse_pkg(uint8_t *raw_pkg) {
   return std::unique_ptr<BasePkg>(nullptr);
 }
 
+template <class T, class... Args>
+std::unique_ptr<uint8_t[]> gen_pkg(PkgType type, Args... args) {
+  static_assert(std::is_base_of<BasePkg, T>::value,
+                "T must derive from pkg::BasePkg");
+
+  auto full_buf = std::make_unique<uint8_t[]>(MAX_TOTAL_SIZE);
+  PkgHeader header(type);
+  header.gen_pkg(full_buf.get());
+  auto pkg_buf = full_buf.get() + HEADER_SIZE;
+
+  T pkg(args...);
+  pkg.gen_pkg(pkg_buf);
+
+  return full_buf;
+}
+
 } // namespace pkg
 
 #endif

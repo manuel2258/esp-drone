@@ -29,6 +29,8 @@ BOOST_AUTO_TEST_CASE(sessioninputsimple_test) {
   auto session = builder.set_mutex(mutex)
                      .add_output_handler(output_handler)
                      .set_converter(converter)
+                     .add_component(output_handler)
+                     .add_component(converter)
                      .build();
 
   session->on_new_pkg(&input);
@@ -60,8 +62,10 @@ BOOST_AUTO_TEST_CASE(sessioninputcomplex_test) {
                      .add_output_handler(output_handler)
                      .set_converter(converter)
                      .add_input_processor(shifter)
-                     .add_event_handler(converter, false)
-                     .add_event_handler(shifter, false)
+                     .add_event_handler(converter)
+                     .add_event_handler(shifter)
+                     .add_component(converter)
+                     .add_component(shifter)
                      .build();
 
   pip::Output cmp;

@@ -41,8 +41,8 @@ void SystemWatchdog::handle_event(eve::Event *event) {
 }
 
 void SystemWatchdog::callback(void *args) {
-  auto event = eve::get_event(eve::EventType::WATCHDOG_TIMEOUT, nullptr);
-  event_handler->handle_event(event.get());
+  auto event = new eve::Event(eve::EventType::WATCHDOG_TIMEOUT, nullptr);
+  get_instance()->event_handler->handle_event(event);
 }
 
 SystemWatchdog::~SystemWatchdog() {

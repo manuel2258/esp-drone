@@ -22,10 +22,12 @@ public:
   virtual void gen_pkg(uint8_t *) = 0;
 };
 
-class PkgHeader {
-  const PkgType pkg_type;
+class PkgHeader : public BasePkg {
+public:
+  PkgHeader(uint8_t *pkg) : BasePkg(static_cast<PkgType>(pkg[0])) {}
+  PkgHeader(PkgType pkg_type) : BasePkg(pkg_type) {}
 
-  PkgHeader(uint8_t *pkg) : pkg_type(static_cast<PkgType>(pkg[0])) {}
+  void gen_pkg(uint8_t *pkg) override { pkg[0] = (uint8_t)pkg_type; }
 };
 
 static constexpr uint8_t HEADER_SIZE = 1;

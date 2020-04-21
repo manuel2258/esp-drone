@@ -17,11 +17,13 @@ struct Event {
 
 class IEventHandler {
 public:
+  virtual ~IEventHandler() {}
   virtual void handle_event(Event *event) = 0;
 };
 
 class IEventProvider {
 public:
+  virtual ~IEventProvider() {}
   virtual void register_handler(IEventHandler *new_handler) = 0;
 };
 
@@ -30,6 +32,7 @@ protected:
   IEventHandler *event_handler;
 
 public:
+  virtual ~BaseEventProvider();
   void register_handler(IEventHandler *new_handler) override {
     event_handler = new_handler;
   }

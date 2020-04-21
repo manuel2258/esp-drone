@@ -8,6 +8,7 @@
 #include "./pkg/base_pkg.h"
 #include "./pkg/hello_pkg.h"
 #include "./pkg/input_pkg.h"
+#include "./ses/builder.h"
 #include "./ses/session.h"
 #include "base_main.h"
 

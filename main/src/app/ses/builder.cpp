@@ -1,5 +1,9 @@
 #include "builder.h"
 
+#include "./pip/processors.h"
+#include "system_mutex.h"
+#include "system_output_logger.h"
+
 namespace ses {
 
 SessionBuilder::SessionBuilder() {
@@ -27,49 +31,30 @@ std::unique_ptr<Session> SessionBuilder::build() {
   return session;
 }
 
-SessionBuilder &SessionBuilder::add_input_processor(pip::IInputProcessor *in,
-                                                    bool as_component) {
+SessionBuilder &SessionBuilder::add_input_processor(pip::IInputProcessor *in) {
   pip_builder.add_input_processor(in);
-  if (as_component) {
-    components->push_back((IComponent *)in);
-  }
-  return *this;
-}
-
-SessionBuilder &SessionBuilder::add_output_processor(pip::IOutputProcessor *out,
-                                                     bool as_component) {
-  pip_builder.add_output_processor(out);
-  if (as_component) {
-    components->push_back((IComponent *)out);
-  }
-  return *this;
-}
-
-SessionBuilder &SessionBuilder::set_converter(pip::IConverter *conv,
-                                              bool as_component) {
-  pip_builder.set_converter(conv);
-  if (as_component) {
-    components->push_back((IComponent *)conv);
-  }
-  return *this;
-}
-
-SessionBuilder &SessionBuilder::add_event_handler(eve::IEventHandler *handler,
-                                                  bool as_component) {
-  eve_builder.add_event_handler(handler);
-  if (as_component) {
-    components->push_back((IComponent *)handler);
-  }
   return *this;
 }
 
 SessionBuilder &
-SessionBuilder::add_event_provider(eve::IEventProvider *provider,
-                                   bool as_component) {
+SessionBuilder::add_output_processor(pip::IOutputProcessor *out) {
+  pip_builder.add_output_processor(out);
+  return *this;
+}
+
+SessionBuilder &SessionBuilder::set_converter(pip::IConverter *conv) {
+  pip_builder.set_converter(conv);
+  return *this;
+}
+
+SessionBuilder &SessionBuilder::add_event_handler(eve::IEventHandler *handler) {
+  eve_builder.add_event_handler(handler);
+  return *this;
+}
+
+SessionBuilder &
+SessionBuilder::add_event_provider(eve::IEventProvider *provider) {
   eve_builder.add_event_provider(provider);
-  if (as_component) {
-    components->push_back((IComponent *)provider);
-  }
   return *this;
 }
 
@@ -78,13 +63,34 @@ SessionBuilder &SessionBuilder::set_mutex(IMutex *mutex) {
   return *this;
 }
 
-SessionBuilder &SessionBuilder::add_output_handler(IOutputHandler *handler,
-                                                   bool as_component) {
+SessionBuilder &SessionBuilder::add_output_handler(IOutputHandler *handler) {
   output_handlers->push_back(handler);
-  if (as_component) {
-    components->push_back((IComponent *)handler);
-  }
   return *this;
+}
+
+SessionBuilder &SessionBuilder::add_component(IComponent *component) {
+  components->push_back(component);
+  return *this;
+}
+
+std::unique_ptr<SessionBuilder> SessionBuilder::get_default() {
+  auto mutex = new ses::SystemMutex();
+  auto output_logger = new ses::SystemOutputLogger();
+  auto converter = new pip::CurveConverter();
+  auto shifter = new pip::InputShifter();
+
+  auto builder = new ses::SessionBuilder();
+  builder->set_mutex(mutex)
+      .set_converter(converter)
+      .add_input_processor(shifter)
+      .add_event_handler(converter)
+      .add_event_handler(shifter)
+      .add_output_handler(output_logger)
+      .add_component(converter)
+      .add_component(shifter)
+      .add_component(output_logger);
+
+  return std::unique_ptr<SessionBuilder>(builder);
 }
 
 } // namespace ses

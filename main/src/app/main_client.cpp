@@ -2,7 +2,7 @@
 
 #include "esp_log.h"
 
-#include "./pkg/input_pkg.h"
+#include "./pkg/pkg_factory.h"
 
 namespace app {
 
@@ -18,11 +18,14 @@ void MainClient::init() {
 
   client.create_socket();
 
-  while (true) {
-    pkg::InputPkg test_pkg(true, 1, 2, 3, 4);
-    auto pkg = test_pkg.gen_pkg();
+  auto hello_pkg = pkg::gen_pkg<pkg::HelloPkg>(pkg::PkgType::Hello);
+  client.send_pkg(hello_pkg.get());
+
+  /*while (true) {
+    auto pkg = pkg::gen_pkg<pkg::InputPkg>(pkg::PkgType::Input, 1, 2, 3, 4);
     client.send_pkg(pkg.get());
-  }
+    vTaskDelay(100);
+  }*/
 };
 
 } // namespace app

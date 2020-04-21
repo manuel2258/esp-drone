@@ -32,6 +32,7 @@ void EventChain::trigger_events() {
   for (auto handler : *handlers) {
     handler->handle_event(event);
   }
+  delete event;
 }
 
 } // namespace eve

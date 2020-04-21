@@ -2,6 +2,8 @@
 
 namespace app {
 
+BaseMain *BaseMain::instance;
+
 BaseMain::BaseMain(net::BaseWifi *wifi) : wifi(wifi) {}
 
 void BaseMain::init() { wifi->pre_init(&BaseMain::handle_wifi_events); }

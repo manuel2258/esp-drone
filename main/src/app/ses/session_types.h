@@ -12,12 +12,14 @@ public:
 
 class IMutex {
 public:
+  virtual ~IMutex() {}
   virtual void lock() = 0;
   virtual void free() = 0;
 };
 
 class IOutputHandler {
 public:
+  virtual ~IOutputHandler() {}
   virtual void handle_output(pip::Output *output) = 0;
 };
 

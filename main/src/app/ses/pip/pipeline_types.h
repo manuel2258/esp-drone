@@ -37,16 +37,19 @@ struct Output {
 
 class IInputProcessor {
 public:
+  virtual ~IInputProcessor() {}
   virtual bool process(Input &in) = 0;
 };
 
 class IConverter {
 public:
+  virtual ~IConverter() {}
   virtual void convert(Input &in, Output &out) = 0;
 };
 
 class IOutputProcessor {
 public:
+  virtual ~IOutputProcessor() {}
   virtual bool process(Output &out) = 0;
 };
 
