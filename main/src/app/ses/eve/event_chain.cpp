@@ -1,7 +1,5 @@
 #include "event_chain.h"
 
-#include "esp_log.h"
-
 namespace eve {
 
 EventChain::EventChain(std::vector<IEventHandler *> *handlers,
@@ -38,7 +36,7 @@ void EventChain::trigger_events() {
   auto event = events.front();
   events.pop();
   mutex->free();
-  
+
   for (auto handler : *handlers) {
     handler->handle_event(event);
   }

@@ -2,6 +2,7 @@
 #include "app/ses/eve/event_chain.h"
 #include "app/ses/eve/event_types.h"
 #include "app/ses/session_types.h"
+#include "app/pkg/hello_pkg.h"
 
 #include "mocks/mock_events.h"
 #include "mocks/mock_session.h"
@@ -14,7 +15,8 @@ BOOST_AUTO_TEST_CASE(simpleevent_test) {
   TestEventHandler test_handler1;
   TestEventHandler test_handler2;
   auto test_mutex = new TestMutex();
-  auto event = new eve::Event(eve::EventType::NET_PKG, nullptr);
+
+  auto event = new eve::NetEvent(new pkg::HelloPkg());
 
   eve::EventChainBuilder builder;
 

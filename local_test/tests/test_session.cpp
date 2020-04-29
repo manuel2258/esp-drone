@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(sessioninputsimple_test) {
   auto mutex = new TestMutex();
   auto output_handler = new TestOutputHandler();
   auto converter = new pip::CurveConverter();
-  pkg::InputPkg input(0, 0, 0, 0);
+  auto input = new pkg::InputPkg(0, 0, 0, 0);
 
   ses::SessionBuilder builder;
 
@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(sessioninputsimple_test) {
                      .add_component(converter)
                      .build();
 
-  session->on_new_pkg(&input);
+  session->on_new_pkg(input);
   session->update();
 
   BOOST_CHECK_EQUAL(pip::CurveConverter::HOVER_THRESHOLD,
@@ -70,16 +70,16 @@ BOOST_AUTO_TEST_CASE(sessioninputcomplex_test) {
 
   pip::Output cmp;
 
-  session->on_new_pkg(&input);
+  session->on_new_pkg(new pkg::InputPkg(input));
 
-  session->on_new_pkg(&shift);
-  session->on_new_pkg(&input);
+  session->on_new_pkg(new pkg::RotationShiftPkg(shift));
+  session->on_new_pkg(new pkg::InputPkg(input));
 
-  session->on_new_pkg(&multi);
-  session->on_new_pkg(&input);
+  session->on_new_pkg(new pkg::MultiplierPkg(multi));
+  session->on_new_pkg(new pkg::InputPkg(input));
 
-  session->on_new_pkg(&thresh);
-  session->on_new_pkg(&input);
+  session->on_new_pkg(new pkg::ThresholdShiftPkg(thresh));
+  session->on_new_pkg(new pkg::InputPkg(input));
 
   session->update();
 
