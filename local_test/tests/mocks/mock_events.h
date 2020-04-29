@@ -5,13 +5,13 @@
 
 class TestEventHandler : public eve::IEventHandler {
 public:
-  eve::Event *received_event = nullptr;
-  void handle_event(eve::Event *event) override { received_event = event; }
+  eve::BaseEvent *received_event = nullptr;
+  void handle_event(eve::BaseEvent *event) override { received_event = event; }
 };
 
 class TestEventProvider : public eve::BaseEventProvider {
 public:
-  void mock_event(eve::Event *event) { event_handler->handle_event(event); }
+  void mock_event(eve::BaseEvent *event) { event_handler->handle_event(event); }
 };
 
 #endif

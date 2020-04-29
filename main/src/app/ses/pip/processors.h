@@ -23,7 +23,7 @@ public:
   ~InputShifter() {}
   bool process(Input &in) override;
 
-  void handle_event(eve::Event *event) override;
+  void handle_event(eve::BaseEvent *event) override;
 
   void set_shifts(int16_t x, int16_t y, int16_t z);
 };
@@ -43,7 +43,7 @@ public:
   static const uint16_t HOVER_THRESHOLD = SHRT_MAX;
   void convert(Input &in, Output &out) override;
 
-  void handle_event(eve::Event *event) override;
+  void handle_event(eve::BaseEvent *event) override;
 
   void set_values(float input_multi, float rotation_multi,
                   int16_t throttle_threshold);

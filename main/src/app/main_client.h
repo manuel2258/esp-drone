@@ -21,6 +21,8 @@ public:
   MainClient() : BaseMain(new net::WifiSta()), client("192.168.4.1", 8080) {}
 
   void init() override;
+
+  void update() override;
 };
 
 } // namespace app

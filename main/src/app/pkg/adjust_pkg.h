@@ -11,6 +11,7 @@ namespace pkg {
 class RotationShiftPkg : public BasePkg {
 public:
   static const uint8_t PKG_SIZE = 6;
+  static const PkgType PKG_TYPE = PkgType::RotationShift;
 
   const int16_t rotation_x_shift;
   const int16_t rotation_y_shift;
@@ -21,12 +22,15 @@ public:
   RotationShiftPkg(int16_t rotation_x_shift, int16_t rotation_y_shift,
                    int16_t rotation_z_shift);
 
+  ~RotationShiftPkg() {}
+
   void gen_pkg(uint8_t *buf) override;
 };
 
 class MultiplierPkg : public BasePkg {
 public:
   static const uint8_t PKG_SIZE = 2;
+  static const PkgType PKG_TYPE = PkgType::Multiplier;
 
   const uint8_t input_multi;
   const uint8_t rotation_multi;
@@ -35,18 +39,23 @@ public:
 
   MultiplierPkg(uint8_t input_multi, uint8_t rotation_multi);
 
+  ~MultiplierPkg() {}
+
   void gen_pkg(uint8_t *buf) override;
 };
 
 class ThresholdShiftPkg : public BasePkg {
 public:
   static const uint8_t PKG_SIZE = 2;
+  static const PkgType PKG_TYPE = PkgType::ThresholdShift;
 
   const int16_t throttle_threshold;
 
   ThresholdShiftPkg(uint8_t *raw_pkg);
 
   ThresholdShiftPkg(int16_t throttle_threshold);
+
+  ~ThresholdShiftPkg() {}
 
   void gen_pkg(uint8_t *buf) override;
 };

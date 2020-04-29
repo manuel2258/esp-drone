@@ -22,8 +22,6 @@ public:
   SessionBuilder();
   ~SessionBuilder();
 
-  static std::unique_ptr<SessionBuilder> get_default();
-
   std::unique_ptr<Session> build();
 
   /**

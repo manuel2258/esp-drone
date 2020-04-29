@@ -31,7 +31,7 @@ public:
 
   void set_output_handler(ses::IOutputHandler *output_handler);
 
-  void handle_event(eve::Event *event);
+  void handle_event(eve::BaseEvent *event);
 
   Output *process(Input &in);
 };

@@ -14,18 +14,25 @@ void MainClient::init() {
     vTaskDelay(10);
   }
 
-  ESP_LOGI("Main", "Creating client");
+  ESP_LOGI("MainClient", "Creating client");
 
   client.create_socket();
+};
 
-  auto hello_pkg = pkg::gen_pkg<pkg::HelloPkg>(pkg::PkgType::Hello);
+void MainClient::update() {
+  while(!wifi->is_connected()) {
+    vTaskDelay(100);
+  }
+
+  auto hello_pkg = pkg::gen_pkg<pkg::HelloPkg>();
   client.send_pkg(hello_pkg.get());
 
-  /*while (true) {
-    auto pkg = pkg::gen_pkg<pkg::InputPkg>(pkg::PkgType::Input, 1, 2, 3, 4);
+  while (true) {
+    auto pkg = pkg::gen_pkg<pkg::InputPkg>(1, 2, 3, 4);
     client.send_pkg(pkg.get());
     vTaskDelay(100);
-  }*/
-};
+    ESP_LOGI("MainClient", "Sending pkg!");
+  }
+}
 
 } // namespace app

@@ -3,6 +3,7 @@
 #include "esp_log.h"
 
 #include "./pkg/pkg_factory.h"
+#include "./ses/builder_factory.h"
 
 namespace app {
 
@@ -26,13 +27,12 @@ void MainServer::init() {
 
 void MainServer::on_new_pkg(uint8_t *buf) {
   auto pkg = pkg::parse_pkg(buf);
-  ESP_LOGE(LOG_TAG, "Received Package of type %i", (int)pkg->pkg_type);
   if (pkg->pkg_type == pkg::PkgType::Hello) {
     if (active_session) {
       ESP_LOGE(LOG_TAG, "Received Hello Package while in active Session ...");
       return;
     }
-    session = ses::SessionBuilder::get_default()->build().release();
+    session = ses::get_default_builder()->build().release();
     active_session = true;
   } else if (pkg->pkg_type == pkg::PkgType::Bye) {
     if (!active_session) {
@@ -48,7 +48,17 @@ void MainServer::on_new_pkg(uint8_t *buf) {
                "Received Input Package while not in active Session ...");
       return;
     }
-    session->on_new_pkg(pkg.get());
+    session->on_new_pkg(pkg.release());
+  }
+  ESP_LOGI("MainServer", "Free Heap after pkg: %i", xPortGetFreeHeapSize());
+}
+
+void MainServer::update() {
+  while (true) {
+    if (active_session) {
+      session->update();
+    }
+    vTaskDelay(10);
   }
 }
 

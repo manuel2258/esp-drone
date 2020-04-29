@@ -23,15 +23,15 @@ SystemWatchdog::SystemWatchdog(int timeout_ms) : timeout_ms(timeout_ms) {
   ESP_ERROR_CHECK(esp_timer_start_once(timer_handle, timeout_ms * 1000));
 }
 
-void SystemWatchdog::handle_event(eve::Event *event) {
+void SystemWatchdog::handle_event(eve::BaseEvent *event) {
   // Watch for NetPkg
   if (event->event_type != eve::EventType::NET_PKG) {
     return;
   }
 
   // Check if type is input
-  auto pkg = (pkg::BasePkg *)event->data;
-  if (pkg->pkg_type != pkg::PkgType::Input) {
+  auto net_event = (eve::NetEvent *)event;
+  if (net_event->pkg->pkg_type != pkg::PkgType::Input) {
     return;
   }
 
@@ -41,7 +41,7 @@ void SystemWatchdog::handle_event(eve::Event *event) {
 }
 
 void SystemWatchdog::callback(void *args) {
-  auto event = new eve::Event(eve::EventType::WATCHDOG_TIMEOUT, nullptr);
+  auto event = new eve::BaseEvent(eve::EventType::WATCHDOG_TIMEOUT);
   get_instance()->event_handler->handle_event(event);
 }
 

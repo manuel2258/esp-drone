@@ -11,15 +11,15 @@ Pipeline::~Pipeline() {
   delete outputs;
 }
 
-void Pipeline::handle_event(eve::Event *event) {
+void Pipeline::handle_event(eve::BaseEvent *event) {
   if (event->event_type != eve::EventType::NET_PKG) {
     return;
   }
-  auto pkg = (pkg::BasePkg *)event->data;
-  if (pkg->pkg_type != pkg::PkgType::Input) {
+  auto net_event = (eve::NetEvent *)event;
+  if (net_event->pkg->pkg_type != pkg::PkgType::Input) {
     return;
   }
-  auto input_pkg = (pkg::InputPkg *)pkg;
+  auto input_pkg = (pkg::InputPkg *)net_event->pkg;
   Input input(*input_pkg);
 
   auto output = process(input);

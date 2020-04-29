@@ -32,7 +32,7 @@ public:
 
   static void callback(void *args);
 
-  void handle_event(eve::Event *event);
+  void handle_event(eve::BaseEvent *event);
 };
 
 } // namespace ses

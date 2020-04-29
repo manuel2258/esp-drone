@@ -20,7 +20,7 @@ private:
 
   ses::IMutex *mutex;
 
-  std::queue<Event *> events;
+  std::queue<BaseEvent *> events;
 
 public:
   EventChain(std::vector<IEventHandler *> *handlers,
@@ -29,7 +29,7 @@ public:
 
   void set_mutex(ses::IMutex *mutex);
 
-  void handle_event(Event *event) override;
+  void handle_event(BaseEvent *event) override;
 
   void trigger_events();
 };

@@ -23,7 +23,7 @@ Session::~Session() {
 }
 
 void Session::on_new_pkg(pkg::BasePkg *pkg) {
-  auto net_pkg_event = new eve::Event(eve::EventType::NET_PKG, pkg);
+  auto net_pkg_event = new eve::NetEvent(pkg);
   event_chain->handle_event(net_pkg_event);
 }
 

@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_CASE(simpleevent_test) {
   TestEventHandler test_handler1;
   TestEventHandler test_handler2;
   auto test_mutex = new TestMutex();
-  eve::Event event = {eve::EventType::NET_PKG, nullptr};
+  auto event = new eve::Event(eve::EventType::NET_PKG, nullptr);
 
   eve::EventChainBuilder builder;
 
@@ -23,11 +23,11 @@ BOOST_AUTO_TEST_CASE(simpleevent_test) {
                    .set_mutex(test_mutex)
                    .build();
 
-  chain->handle_event(&event);
+  chain->handle_event(event);
   chain->trigger_events();
 
-  BOOST_CHECK_EQUAL(&event, test_handler1.received_event);
-  BOOST_CHECK_EQUAL(&event, test_handler2.received_event);
+  BOOST_CHECK_EQUAL(event, test_handler1.received_event);
+  BOOST_CHECK_EQUAL(event, test_handler2.received_event);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

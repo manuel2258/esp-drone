@@ -33,7 +33,9 @@ public:
   MainServer();
 
   void init() override;
-}; // namespace app
+
+  void update() override;
+};
 
 } // namespace app
 

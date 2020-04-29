@@ -29,11 +29,15 @@ public:
   static void handle_wifi_events(void *arg, esp_event_base_t event_base,
                                  int32_t event_id, void *event_data);
 
+  static void update_task(void *args);
+
   /**
    * @brief Initializes the system.
    * Has to be called after the main_obj pointer was set.
    */
   virtual void init();
+
+  virtual void update() = 0;
 };
 
 } // namespace app

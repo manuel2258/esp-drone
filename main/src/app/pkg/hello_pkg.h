@@ -13,9 +13,11 @@ namespace pkg {
  * @brief Represents a hello package
  */
 class HelloPkg : public BasePkg {
-
   // API to generate a pkg object from a buffer
 public:
+  static const uint8_t PKG_SIZE = 0;
+  static const PkgType PKG_TYPE = PkgType::Hello;
+
   HelloPkg(uint8_t *raw_pkg);
 
   // API to generate a buffer from pkg object

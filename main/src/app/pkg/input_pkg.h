@@ -17,6 +17,7 @@ class InputPkg : public BasePkg {
   // Public fields
 public:
   static const uint8_t PKG_SIZE = 8;
+  static const PkgType PKG_TYPE = PkgType::Input;
 
   const int16_t throttle;
   const int16_t rotation_x;
@@ -31,6 +32,8 @@ public:
 public:
   InputPkg(int16_t throttle, int16_t rotation_x, int16_t rotation_y,
            int16_t rotation_z);
+
+  ~InputPkg() {}
 
   /**
    * @brief Writes pkg data to buffer from the current pkg's fields

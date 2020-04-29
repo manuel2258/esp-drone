@@ -4,11 +4,11 @@
 
 namespace pkg {
 
-HelloPkg::HelloPkg(uint8_t *raw_pkg) : BasePkg(PkgType::Input) {
+HelloPkg::HelloPkg(uint8_t *raw_pkg) : BasePkg(PkgType::Hello) {
   assert(raw_pkg[0] == 0);
 }
 
-HelloPkg::HelloPkg() : BasePkg(PkgType::Input) {}
+HelloPkg::HelloPkg() : BasePkg(PkgType::Hello) {}
 
 void HelloPkg::gen_pkg(uint8_t *pkg) {}
 

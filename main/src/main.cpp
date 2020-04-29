@@ -6,7 +6,7 @@
 #include "nvs_flash.h"
 #include <stdio.h>
 
-#define BUILD_CLIENT
+//#define BUILD_CLIENT
 
 #ifdef BUILD_CLIENT
 #include "app/main_client.h"

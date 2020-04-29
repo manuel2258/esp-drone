@@ -61,17 +61,17 @@ void CurveConverter::convert(Input &in, Output &out) {
   out.fl_motor -= rot_z;
 }
 
-void CurveConverter::handle_event(eve::Event *event) {
+void CurveConverter::handle_event(eve::BaseEvent *event) {
   if (event->event_type != eve::EventType::NET_PKG) {
     return;
   }
-  auto net_pkg = (pkg::BasePkg *)event->data;
-  if (net_pkg->pkg_type == pkg::PkgType::Multiplier) {
-    auto multi_pkg = (pkg::MultiplierPkg *)net_pkg;
+  auto net_event = (eve::NetEvent *)event;
+  if (net_event->pkg->pkg_type == pkg::PkgType::Multiplier) {
+    auto multi_pkg = (pkg::MultiplierPkg *)net_event->pkg;
     input_multi = 0.1 * multi_pkg->input_multi;
     rotation_multi = 0.1 * multi_pkg->rotation_multi;
-  } else if (net_pkg->pkg_type == pkg::PkgType::ThresholdShift) {
-    auto threshold_pkg = (pkg::ThresholdShiftPkg *)net_pkg;
+  } else if (net_event->pkg->pkg_type == pkg::PkgType::ThresholdShift) {
+    auto threshold_pkg = (pkg::ThresholdShiftPkg *)net_event->pkg;
     throttle_threshold = threshold_pkg->throttle_threshold;
   }
 }
@@ -100,15 +100,15 @@ bool InputShifter::process(Input &in) {
   return false;
 }
 
-void InputShifter::handle_event(eve::Event *event) {
+void InputShifter::handle_event(eve::BaseEvent *event) {
   if (event->event_type != eve::EventType::NET_PKG) {
     return;
   }
-  auto net_pkg = (pkg::BasePkg *)event->data;
-  if (net_pkg->pkg_type != pkg::PkgType::RotationShift) {
+  auto net_event = (eve::NetEvent *)event;
+  if (net_event->pkg->pkg_type != pkg::PkgType::RotationShift) {
     return;
   }
-  auto shift_pkg = (pkg::RotationShiftPkg *)net_pkg;
+  auto shift_pkg = (pkg::RotationShiftPkg *)net_event->pkg;
   rotation_x_shift = shift_pkg->rotation_x_shift;
   rotation_y_shift = shift_pkg->rotation_y_shift;
   rotation_z_shift = shift_pkg->rotation_z_shift;
